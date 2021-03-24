@@ -7,24 +7,26 @@ using BitmapToVector;
 using BitmapToVector.SkiaSharp;
 using SkiaSharp;
 
-namespace ConsoleApp1
+namespace TraceDemo
 {
     class Program
     {
         static void Main(string[] args)
         {
-            var filename = @"C:\DOWNLOADS\Projects\ConsoleApp1\ConsoleApp1\input.jpg";
-            var param = new PotraceParam();
+            if (args.Length != 1)
+            {
+                Console.WriteLine("Usage: TraceDemo <filename>");
+                return;
+            }
+
+            var filename = args[0];
+
             using var source = SKBitmap.Decode(filename);
+            var param = new PotraceParam();
             var paths = PotraceSkiaSharp.Trace(param, source);
 
-            Console.WriteLine(paths.Count());
-
-            var svgFilename = @"C:\DOWNLOADS\Projects\ConsoleApp1\ConsoleApp1\output.svg";
-            SaveAsSvg(source, paths, svgFilename);
-
-            var pngFilename = @"C:\DOWNLOADS\Projects\ConsoleApp1\ConsoleApp1\output.png";
-            SaveAsPng(source, paths, pngFilename);
+            SaveAsSvg(source, paths, "output.svg");
+            SaveAsPng(source, paths, "output.png");
         }
 
         private static void SaveAsSvg(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
