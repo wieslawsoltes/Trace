@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -16,9 +15,8 @@ namespace TraceGui.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
-            var dockPanel = this.FindControl<DockPanel>("DockPanel");
-            dockPanel.AddHandler(DragDrop.DragOverEvent, DragOver);
-            dockPanel.AddHandler(DragDrop.DropEvent, Drop);
+           AddHandler(DragDrop.DragOverEvent, DragOver);
+           AddHandler(DragDrop.DropEvent, Drop);
         }
 
         private void DragOver(object? sender, DragEventArgs e)
