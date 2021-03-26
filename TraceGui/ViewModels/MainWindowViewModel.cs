@@ -180,8 +180,6 @@ namespace TraceGui.ViewModels
 
             var paths = PotraceAvalonia.Trace(param, _source).ToList();
 
-            Console.WriteLine($"paths {paths.Count}");
-            
             Width = _source.Width;
             Height = _source.Height;
             Paths = paths;
