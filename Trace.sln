@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraceDemo", "TraceDemo\TraceDemo.csproj", "{4FAFDE82-1A08-454C-A9C4-A021470572F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trace", "Trace\Trace.csproj", "{4FAFDE82-1A08-454C-A9C4-A021470572F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

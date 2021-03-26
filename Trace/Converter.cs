@@ -1,35 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using BitmapToVector;
-using BitmapToVector.SkiaSharp;
 using SkiaSharp;
 
-namespace TraceDemo
+namespace Trace
 {
-    class Program
+    static class Converter
     {
-        static void Main(string[] args)
-        {
-            if (args.Length != 1)
-            {
-                Console.WriteLine("Usage: TraceDemo <filename>");
-                return;
-            }
-
-            var filename = args[0];
-
-            using var source = SKBitmap.Decode(filename);
-            var param = new PotraceParam();
-            var paths = PotraceSkiaSharp.Trace(param, source);
-
-            SaveAsSvg(source, paths, "output.svg");
-            SaveAsPng(source, paths, "output.png");
-        }
-
-        private static void SaveAsSvg(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
+        public static void SaveAsSvg(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
         {
             var sb = new StringBuilder();
 
@@ -47,7 +25,7 @@ namespace TraceDemo
             File.WriteAllText(filename, svg);
         }
 
-        private static void SaveAsPng(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
+        public static void SaveAsPng(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
         {
             using var paint = new SKPaint
             {
@@ -68,6 +46,7 @@ namespace TraceDemo
 
             using var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
             using var file = File.Create(filename);
+
             data.SaveTo(file);
         }
     }
