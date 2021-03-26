@@ -6,13 +6,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TraceGui.Views.MainWindow"
+        DragDrop.AllowDrop="True"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Icon="/Assets/avalonia-logo.ico"
         Title="TraceGui">
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <DockPanel Name="DockPanel" Background="Transparent" DragDrop.AllowDrop="True">
+    <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open..." Command="{Binding OpenCommand}"/>
@@ -49,7 +50,7 @@
                            Increment="0.1"
                            HorizontalAlignment="Stretch"/>
         </StackPanel>
-        <ScrollViewer>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Panel Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <controls:GeometryCanvas Width="{Binding Width}"
                                          Height="{Binding Height}"
