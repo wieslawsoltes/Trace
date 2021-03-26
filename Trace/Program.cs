@@ -24,7 +24,7 @@ namespace Trace
             var param = new PotraceParam();
             var paths = PotraceSkiaSharp.Trace(param, source).ToList();
 
-            Converter.SaveAsSvg(source, paths, outputFileName);
+            SvgWriter.Save(source, paths, outputFileName);
         }
     }
 }
