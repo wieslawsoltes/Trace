@@ -12,7 +12,7 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-    <DockPanel>
+    <DockPanel Name="DockPanel" Background="Transparent" DragDrop.AllowDrop="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Open..." Command="{Binding OpenCommand}"/>
