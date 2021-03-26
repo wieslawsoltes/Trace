@@ -18,6 +18,11 @@ namespace TraceGui
             set => SetValue(PathsProperty, value);
         }
 
+        static GeometryCanvas()
+        {
+            AffectsRender<GeometryCanvas>(PathsProperty);
+        }
+
         public override void Render(DrawingContext context)
         {
             base.Render(context);
