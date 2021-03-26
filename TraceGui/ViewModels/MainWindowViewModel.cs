@@ -10,13 +10,13 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using BitmapToVector;
 using ReactiveUI;
-using SkiaSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace TraceGui.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private SKBitmap? _source;
+        private SixLabors.ImageSharp.Image<Rgba32>? _source;
         private string? _fileName;
         private IEnumerable<PathGeometry>? _paths;
         private int _width;
@@ -159,7 +159,7 @@ namespace TraceGui.ViewModels
         private void Decode(string filename)
         {
             _source?.Dispose();
-            _source = SKBitmap.Decode(filename);
+            _source = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
         }
 
         private void Trace()
