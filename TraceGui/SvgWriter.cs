@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Avalonia.Platform;
-using SkiaSharp;
+using Avalonia.Media;
 
 namespace TraceGui
 {
     static class SvgWriter
     {
-        public static string ToSvg(int width, int height, IEnumerable<IGeometryImpl> paths, string fillColor)
+        public static string ToSvg(int width, int height, IEnumerable<PathGeometry> paths, string fillColor)
         {
             var sb = new StringBuilder();
 
@@ -16,7 +16,8 @@ namespace TraceGui
 
             foreach (var path in paths)
             {
-                sb.AppendLine($"    <path fill=\"{fillColor}\" d=\"{path.ToString()}\"/>");
+                var d = path.ToString();
+                sb.AppendLine($"    <path fill=\"{fillColor}\" d=\"{d}\"/>");
             }
 
             sb.AppendLine($"</svg>");
@@ -24,7 +25,7 @@ namespace TraceGui
             return sb.ToString();
         }
 
-        public static void Save(int width, int height, IEnumerable<IGeometryImpl> paths, string filename, string fillColor = "#000000")
+        public static void Save(int width, int height, IEnumerable<PathGeometry> paths, string filename, string fillColor = "#000000")
         {
             var svg = ToSvg(width, height, paths, fillColor);
             File.WriteAllText(filename, svg);

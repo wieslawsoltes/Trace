@@ -3,16 +3,15 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Avalonia.Platform;
 
 namespace TraceGui
 {
     public class GeometryCanvas : Control
     {
-        public static readonly StyledProperty<IEnumerable<IGeometryImpl>?> PathsProperty = 
-            AvaloniaProperty.Register<GeometryCanvas, IEnumerable<IGeometryImpl>?>(nameof(Paths));
+        public static readonly StyledProperty<IEnumerable<PathGeometry>?> PathsProperty = 
+            AvaloniaProperty.Register<GeometryCanvas, IEnumerable<PathGeometry>?>(nameof(Paths));
 
-        public IEnumerable<IGeometryImpl>? Paths
+        public IEnumerable<PathGeometry>? Paths
         {
             get => GetValue(PathsProperty);
             set => SetValue(PathsProperty, value);
@@ -35,7 +34,7 @@ namespace TraceGui
 
                 foreach (var path in paths)
                 {
-                    context.PlatformImpl.DrawGeometry(brush, null, path);
+                    context.DrawGeometry(brush, null, path);
                 }
             }
         }

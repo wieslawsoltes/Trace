@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia;
-using Avalonia.Platform;
+using Avalonia.Media;
+using Avalonia.Visuals.Platform;
 using BitmapToVector;
 using SkiaSharp;
 
@@ -9,11 +10,7 @@ namespace TraceGui
 {
     public static class PotraceAvalonia
     {
-        private static IPlatformRenderInterface? _factory;
-
-        private static IPlatformRenderInterface Factory => _factory ??= AvaloniaLocator.Current.GetService<IPlatformRenderInterface>();
-
-        public static IEnumerable<IGeometryImpl> Trace(PotraceParam param, SKBitmap bitmap)
+        public static IEnumerable<PathGeometry> Trace(PotraceParam param, SKBitmap bitmap)
         {
             var width = bitmap.Width;
             var height = bitmap.Height;
@@ -46,26 +43,26 @@ namespace TraceGui
             return CreateSKPaths(traceResult.Plist);
         }
 
-        public static IEnumerable<IGeometryImpl > Trace(PotraceParam param, PotraceBitmap potraceBitmap)
+        public static IEnumerable<PathGeometry > Trace(PotraceParam param, PotraceBitmap potraceBitmap)
         {
             var traceResult = Potrace.Trace(param, potraceBitmap);
             return CreateSKPaths(traceResult.Plist);
         }
 
-        private static IEnumerable<IGeometryImpl > CreateSKPaths(PotracePath rootPath)
+        private static IEnumerable<PathGeometry > CreateSKPaths(PotracePath rootPath)
         {
             var pathGroups = GetPathGroups(rootPath);
             foreach (var pathGroup in pathGroups)
             {
-                var geometry =  Factory.CreateStreamGeometry();
-                using var context = geometry.Open();
+                var geometry = new PathGeometry();
+                using var context = new PathGeometryContext(geometry);
 
                 foreach (var potracePath in pathGroup)
                 {
                     var potraceCurve = potracePath.Curve;
             
                     var lastPoint = potraceCurve.C[potraceCurve.N - 1][2];
-                    context.BeginFigure(new Point((float) lastPoint.X, (float) lastPoint.Y));
+                    context.BeginFigure(new Point((float) lastPoint.X, (float) lastPoint.Y), true);
 
                     for (var i = 0; i < potraceCurve.N; i++)
                     {

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform;
+using Avalonia.Media;
 using BitmapToVector;
 using ReactiveUI;
 using SkiaSharp;
@@ -14,7 +15,8 @@ namespace TraceGui.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private IEnumerable<IGeometryImpl>? _paths;
+        private string? _fileName;
+        private IEnumerable<PathGeometry>? _paths;
         private int _width;
         private int _height;
 
@@ -57,6 +59,8 @@ namespace TraceGui.ViewModels
                 Extensions = new List<string> {"svg"}
             });
 
+            dlg.InitialFileName = Path.GetFileNameWithoutExtension(_fileName);
+
             var result = await dlg.ShowAsync(GetMainWindow());
             if (result is not null)
             {
@@ -81,6 +85,7 @@ namespace TraceGui.ViewModels
             Width = source.Width;
             Height = source.Height;
             Paths = paths;
+            FileName = filename;
         }
 
         private Window? GetMainWindow()
@@ -92,7 +97,13 @@ namespace TraceGui.ViewModels
 
         public ICommand SaveCommand { get; }
 
-        public IEnumerable<IGeometryImpl>? Paths
+        public string? FileName
+        {
+            get => _fileName;
+            set => this.RaiseAndSetIfChanged(ref _fileName, value);
+        }
+
+        public IEnumerable<PathGeometry>? Paths
         {
             get => _paths;
             set => this.RaiseAndSetIfChanged(ref _paths, value);
