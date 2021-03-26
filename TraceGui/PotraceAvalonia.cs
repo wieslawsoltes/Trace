@@ -19,8 +19,8 @@ namespace TraceGui
             PotraceState traceResult;
             unsafe
             {
-                var ptr = (byte*)pixelsIntPtr.ToPointer() + bytesOffset;
-                
+                var ptr = (byte*) pixelsIntPtr.ToPointer() + bytesOffset;
+
                 using (var potraceBitmap = PotraceBitmap.Create(width, height))
                 {
                     for (var y = 0; y < height; y++)
@@ -40,16 +40,16 @@ namespace TraceGui
                 }
             }
 
-            return CreateSKPaths(traceResult.Plist);
+            return CreatePathGeometries(traceResult.Plist);
         }
 
-        public static IEnumerable<PathGeometry > Trace(PotraceParam param, PotraceBitmap potraceBitmap)
+        public static IEnumerable<PathGeometry> Trace(PotraceParam param, PotraceBitmap potraceBitmap)
         {
             var traceResult = Potrace.Trace(param, potraceBitmap);
-            return CreateSKPaths(traceResult.Plist);
+            return CreatePathGeometries(traceResult.Plist);
         }
 
-        private static IEnumerable<PathGeometry> CreateSKPaths(PotracePath rootPath)
+        private static IEnumerable<PathGeometry> CreatePathGeometries(PotracePath rootPath)
         {
             var pathGroups = GetPathGroups(rootPath);
             foreach (var pathGroup in pathGroups)
@@ -60,7 +60,7 @@ namespace TraceGui
                 foreach (var potracePath in pathGroup)
                 {
                     var potraceCurve = potracePath.Curve;
-            
+
                     var lastPoint = potraceCurve.C[potraceCurve.N - 1][2];
                     context.BeginFigure(new Point((float) lastPoint.X, (float) lastPoint.Y), true);
 
@@ -81,8 +81,8 @@ namespace TraceGui
                             var handle2 = segment[1];
                             var potracePoint = segment[2];
                             context.CubicBezierTo(
-                                new Point((float) handle1.X, (float) handle1.Y), 
-                                new Point((float) handle2.X, (float) handle2.Y), 
+                                new Point((float) handle1.X, (float) handle1.Y),
+                                new Point((float) handle2.X, (float) handle2.Y),
                                 new Point((float) potracePoint.X, (float) potracePoint.Y));
                         }
                     }
