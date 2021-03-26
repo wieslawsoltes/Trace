@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 
-namespace TraceGui
+namespace TraceGui.Controls
 {
     public class GeometryCanvas : Control
     {
