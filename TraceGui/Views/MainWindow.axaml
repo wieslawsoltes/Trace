@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TraceGui.ViewModels"
+        xmlns:local="using:TraceGui"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TraceGui.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="TraceGui">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}"/>
+                <Separator/>
+                <MenuItem Header="_Save..." Command="{Binding SaveCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <ScrollViewer>
+            <Panel Background="WhiteSmoke"
+                   VerticalAlignment="Center" 
+                   HorizontalAlignment="Center">
+                <local:GeometryCanvas Width="{Binding Width}"
+                                      Height="{Binding Height}"
+                                      Paths="{Binding Paths}"/>
+            </Panel>
+        </ScrollViewer>
+
+    </DockPanel>
+
+</Window>
