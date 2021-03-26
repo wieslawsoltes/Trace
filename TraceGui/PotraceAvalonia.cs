@@ -20,24 +20,22 @@ namespace TraceGui
             unsafe
             {
                 var ptr = (byte*) pixelsIntPtr.ToPointer() + bytesOffset;
+                using var potraceBitmap = PotraceBitmap.Create(width, height);
 
-                using (var potraceBitmap = PotraceBitmap.Create(width, height))
+                for (var y = 0; y < height; y++)
+                for (var x = 0; x < width; x++)
                 {
-                    for (var y = 0; y < height; y++)
-                    for (var x = 0; x < width; x++)
+                    // For speed, only check 1 byte for the pixel.
+                    // This is the red color if the ColorType has a red component.
+                    if (*ptr < 128)
                     {
-                        // For speed, only check 1 byte for the pixel.
-                        // This is the red color if the ColorType has a red component.
-                        if (*ptr < 128)
-                        {
-                            potraceBitmap.SetBlackUnsafe(x, y);
-                        }
-
-                        ptr += bytesPerPixel;
+                        potraceBitmap.SetBlackUnsafe(x, y);
                     }
 
-                    traceResult = Potrace.Trace(param, potraceBitmap);
+                    ptr += bytesPerPixel;
                 }
+
+                traceResult = Potrace.Trace(param, potraceBitmap);
             }
 
             return CreatePathGeometries(traceResult.Plist);
@@ -131,7 +129,6 @@ namespace TraceGui
                     return (BytesPerPixel: 1, Offset: 0);
                 case SKColorType.Rg88:
                     return (BytesPerPixel: 2, Offset: 0);
-
                 case SKColorType.Unknown:
                 case SKColorType.Rgb565:
                 case SKColorType.Argb4444:
