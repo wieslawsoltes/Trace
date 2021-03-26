@@ -147,7 +147,7 @@ namespace TraceGui.ViewModels
             }
         }
 
-        private void Load(string filename)
+        public void Load(string filename)
         {
             Decode(filename);
 
