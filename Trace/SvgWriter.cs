@@ -7,11 +7,11 @@ namespace Trace
 {
     static class SvgWriter
     {
-        public static void Save(SKBitmap source, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
+        public static string ToSvg(int width, int height, IEnumerable<SKPath> paths, string fillColor)
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{source.Width}\" height=\"{source.Height}\">");
+            sb.AppendLine($"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{width}\" height=\"{height}\">");
 
             foreach (var path in paths)
             {
@@ -20,8 +20,12 @@ namespace Trace
 
             sb.AppendLine($"</svg>");
 
-            var svg = sb.ToString();
+            return sb.ToString();
+        }
 
+        public static void Save(int width, int height, IEnumerable<SKPath> paths, string filename, string fillColor = "#000000")
+        {
+            var svg = ToSvg(width, height, paths, fillColor);
             File.WriteAllText(filename, svg);
         }
     }

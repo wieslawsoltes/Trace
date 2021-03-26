@@ -16,15 +16,12 @@ namespace Trace
                 Console.WriteLine("Usage: Trace <filename> [filename.svg]");
                 return;
             }
-
             var inputFileName = args[0];
             var outputFileName = args.Length == 1 ? Path.ChangeExtension(inputFileName, ".svg") : args[1];
-
             using var source = SKBitmap.Decode(inputFileName);
             var param = new PotraceParam();
             var paths = PotraceSkiaSharp.Trace(param, source).ToList();
-
-            SvgWriter.Save(source, paths, outputFileName);
+            SvgWriter.Save(source.Width, source.Height, paths, outputFileName);
         }
     }
 }
