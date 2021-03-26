@@ -7,23 +7,24 @@ using SkiaSharp;
 
 namespace Trace
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1 || args.Length > 2)
             {
-                Console.WriteLine("Usage: Trace <filename>");
+                Console.WriteLine("Usage: Trace <filename> [filename.svg]");
                 return;
             }
 
-            var filename = args[0];
+            var inputFileName = args[0];
+            var outputFileName = args.Length == 2 ? Path.ChangeExtension(inputFileName, ".svg") : args[1];
 
-            using var source = SKBitmap.Decode(filename);
+            using var source = SKBitmap.Decode(inputFileName);
             var param = new PotraceParam();
             var paths = PotraceSkiaSharp.Trace(param, source).ToList();
 
-            Converter.SaveAsSvg(source, paths, Path.ChangeExtension(filename, ".svg"));
+            Converter.SaveAsSvg(source, paths, outputFileName);
         }
     }
 }
