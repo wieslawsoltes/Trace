@@ -20,36 +20,34 @@
                 <MenuItem Header="_Save..." Command="{Binding SaveCommand}"/>
             </MenuItem>
         </Menu>
-        <StackPanel>
-            <StackPanel Margin="8" Spacing="4">
-                <Label Content="Algorithm options:"/>
-                <Label Content="TurdSize"/>
-                <NumericUpDown Value="{Binding TurdSize}"
-                               Increment="1"
-                               HorizontalAlignment="Stretch"/>
-                <Label Content="TurnPolicy"/>
-                <ComboBox SelectedIndex="{Binding TurnPolicy}"
-                          HorizontalAlignment="Stretch">
-                    <ComboBoxItem Content="Black"/>
-                    <ComboBoxItem Content="White"/>
-                    <ComboBoxItem Content="Left"/>
-                    <ComboBoxItem Content="Right"/>
-                    <ComboBoxItem Content="Minority"/>
-                    <ComboBoxItem Content="Majority"/>
-                    <ComboBoxItem Content="Random"/>
-                </ComboBox>
-                <Label Content="AlphaMax"/>
-                <NumericUpDown Value="{Binding AlphaMax}"
-                               Increment="0.1"
-                               HorizontalAlignment="Stretch"/>
-                <CheckBox Content="OptiCurve" 
-                          IsChecked="{Binding OptiCurve}"
-                          HorizontalAlignment="Stretch"/>
-                <Label Content="OptTolerance"/>
-                <NumericUpDown Value="{Binding OptTolerance}"
-                               Increment="0.1"
-                               HorizontalAlignment="Stretch"/>
-            </StackPanel>
+        <StackPanel Margin="8" Spacing="4">
+            <Label Content="Algorithm options:"/>
+            <Label Content="TurdSize"/>
+            <NumericUpDown Value="{Binding TurdSize}"
+                           Increment="1"
+                           HorizontalAlignment="Stretch"/>
+            <Label Content="TurnPolicy"/>
+            <ComboBox SelectedIndex="{Binding TurnPolicy}"
+                      HorizontalAlignment="Stretch">
+                <ComboBoxItem Content="Black"/>
+                <ComboBoxItem Content="White"/>
+                <ComboBoxItem Content="Left"/>
+                <ComboBoxItem Content="Right"/>
+                <ComboBoxItem Content="Minority"/>
+                <ComboBoxItem Content="Majority"/>
+                <ComboBoxItem Content="Random"/>
+            </ComboBox>
+            <Label Content="AlphaMax"/>
+            <NumericUpDown Value="{Binding AlphaMax}"
+                           Increment="0.1"
+                           HorizontalAlignment="Stretch"/>
+            <CheckBox Content="OptiCurve" 
+                      IsChecked="{Binding OptiCurve}"
+                      HorizontalAlignment="Stretch"/>
+            <Label Content="OptTolerance"/>
+            <NumericUpDown Value="{Binding OptTolerance}"
+                           Increment="0.1"
+                           HorizontalAlignment="Stretch"/>
         </StackPanel>
         <ScrollViewer>
             <Panel Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center">
