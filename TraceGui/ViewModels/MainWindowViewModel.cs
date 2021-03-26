@@ -26,6 +26,34 @@ namespace TraceGui.ViewModels
             SaveCommand = ReactiveCommand.CreateFromTask(async () => await OnSave());
         }
 
+        public ICommand OpenCommand { get; }
+
+        public ICommand SaveCommand { get; }
+
+        public string? FileName
+        {
+            get => _fileName;
+            set => this.RaiseAndSetIfChanged(ref _fileName, value);
+        }
+
+        public IEnumerable<PathGeometry>? Paths
+        {
+            get => _paths;
+            set => this.RaiseAndSetIfChanged(ref _paths, value);
+        }
+
+        public int Width
+        {
+            get => _width;
+            set => this.RaiseAndSetIfChanged(ref _width, value);
+        }
+
+        public int Height
+        {
+            get => _height;
+            set => this.RaiseAndSetIfChanged(ref _height, value);
+        }
+
         private async Task OnOpen()
         {
             var dlg = new OpenFileDialog();
@@ -91,34 +119,6 @@ namespace TraceGui.ViewModels
         private Window? GetMainWindow()
         {
             return (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
-        }
-
-        public ICommand OpenCommand { get; }
-
-        public ICommand SaveCommand { get; }
-
-        public string? FileName
-        {
-            get => _fileName;
-            set => this.RaiseAndSetIfChanged(ref _fileName, value);
-        }
-
-        public IEnumerable<PathGeometry>? Paths
-        {
-            get => _paths;
-            set => this.RaiseAndSetIfChanged(ref _paths, value);
-        }
-
-        public int Width
-        {
-            get => _width;
-            set => this.RaiseAndSetIfChanged(ref _width, value);
-        }
-
-        public int Height
-        {
-            get => _height;
-            set => this.RaiseAndSetIfChanged(ref _height, value);
         }
     }
 }
