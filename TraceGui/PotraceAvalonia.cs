@@ -49,7 +49,7 @@ namespace TraceGui
             return CreateSKPaths(traceResult.Plist);
         }
 
-        private static IEnumerable<PathGeometry > CreateSKPaths(PotracePath rootPath)
+        private static IEnumerable<PathGeometry> CreateSKPaths(PotracePath rootPath)
         {
             var pathGroups = GetPathGroups(rootPath);
             foreach (var pathGroup in pathGroups)
