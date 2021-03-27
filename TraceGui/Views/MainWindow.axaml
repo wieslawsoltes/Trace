@@ -26,7 +26,7 @@
                 <MenuItem Header="_Save..." Command="{Binding SaveCommand}" InputGesture="Ctrl+S" />
             </MenuItem>
         </Menu>
-        <StackPanel Margin="8" Spacing="4">
+        <StackPanel Margin="8" Spacing="4" Width="200">
             <Label Content="Algorithm options:" />
             <Label Content="TurdSize" />
             <NumericUpDown Value="{Binding TurdSize}"
