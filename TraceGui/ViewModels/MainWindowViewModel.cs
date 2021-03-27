@@ -32,11 +32,11 @@ namespace TraceGui.ViewModels
             OpenCommand = ReactiveCommand.CreateFromTask(async () => await OnOpen());
             SaveCommand = ReactiveCommand.CreateFromTask(async () => await OnSave());
 
-            this.WhenAnyValue(x => x.TurdSize).Subscribe(x => Trace());
-            this.WhenAnyValue(x => x.TurnPolicy).Subscribe(x => Trace());
-            this.WhenAnyValue(x => x.AlphaMax).Subscribe(x => Trace());
-            this.WhenAnyValue(x => x.OptiCurve).Subscribe(x => Trace());
-            this.WhenAnyValue(x => x.OptTolerance).Subscribe(x => Trace());
+            this.WhenAnyValue(x => x.TurdSize).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.TurnPolicy).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.AlphaMax).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.OptiCurve).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.OptTolerance).Subscribe(_ => Trace());
         }
 
         public ICommand OpenCommand { get; }
