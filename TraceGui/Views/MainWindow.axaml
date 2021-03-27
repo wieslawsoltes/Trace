@@ -12,59 +12,67 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="TraceGui">
     <Window.KeyBindings>
-        <KeyBinding Command="{Binding OpenCommand}" Gesture="Ctrl+O"/>
-        <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S"/>
+        <KeyBinding Command="{Binding OpenCommand}" Gesture="Ctrl+O" />
+        <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />
     </Window.KeyBindings>
     <Design.DataContext>
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" InputGesture="Ctrl+O"/>
-                <Separator/>
-                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" InputGesture="Ctrl+S"/>
+                <MenuItem Header="_Open..." Command="{Binding OpenCommand}" InputGesture="Ctrl+O" />
+                <Separator />
+                <MenuItem Header="_Save..." Command="{Binding SaveCommand}" InputGesture="Ctrl+S" />
             </MenuItem>
         </Menu>
         <StackPanel Margin="8" Spacing="4">
-            <Label Content="Algorithm options:"/>
-            <Label Content="TurdSize"/>
+            <Label Content="Algorithm options:" />
+            <Label Content="TurdSize" />
             <NumericUpDown Value="{Binding TurdSize}"
                            Increment="1"
-                           HorizontalAlignment="Stretch"/>
-            <Label Content="TurnPolicy"/>
+                           HorizontalAlignment="Stretch" />
+            <Label Content="TurnPolicy" />
             <ComboBox SelectedIndex="{Binding TurnPolicy}"
                       HorizontalAlignment="Stretch">
-                <ComboBoxItem Content="Black"/>
-                <ComboBoxItem Content="White"/>
-                <ComboBoxItem Content="Left"/>
-                <ComboBoxItem Content="Right"/>
-                <ComboBoxItem Content="Minority"/>
-                <ComboBoxItem Content="Majority"/>
-                <ComboBoxItem Content="Random"/>
+                <ComboBoxItem Content="Black" />
+                <ComboBoxItem Content="White" />
+                <ComboBoxItem Content="Left" />
+                <ComboBoxItem Content="Right" />
+                <ComboBoxItem Content="Minority" />
+                <ComboBoxItem Content="Majority" />
+                <ComboBoxItem Content="Random" />
             </ComboBox>
-            <Label Content="AlphaMax"/>
+            <Label Content="AlphaMax" />
             <NumericUpDown Value="{Binding AlphaMax}"
                            Increment="0.1"
-                           HorizontalAlignment="Stretch"/>
-            <CheckBox Content="OptiCurve" 
+                           HorizontalAlignment="Stretch" />
+            <CheckBox Content="OptiCurve"
                       IsChecked="{Binding OptiCurve}"
-                      HorizontalAlignment="Stretch"/>
-            <Label Content="OptTolerance"/>
+                      HorizontalAlignment="Stretch" />
+            <Label Content="OptTolerance" />
             <NumericUpDown Value="{Binding OptTolerance}"
                            Increment="0.1"
-                           HorizontalAlignment="Stretch"/>
-            <Label Content="QuantizeUnit"/>
+                           HorizontalAlignment="Stretch" />
+            <Label Content="QuantizeUnit" />
             <NumericUpDown Value="{Binding QuantizeUnit}"
                            Increment="1"
-                           HorizontalAlignment="Stretch"/>
+                           HorizontalAlignment="Stretch" />
         </StackPanel>
-        <Viewbox Stretch="Uniform">
-            <Panel Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Panel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
+            <Panel.Background>
+                <VisualBrush TileMode="Tile" SourceRect="0,0,20,20" DestinationRect="0,0,20,20">
+                    <VisualBrush.Visual>
+                        <Path Data="M 0,0 L 0,10 L 10,10 L 10,0 Z M 10,10 L 10,20 L 20,20 L 20,10 Z" Fill="#FFF0F0F0" />
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Panel.Background>
+            <Viewbox Stretch="Uniform">
                 <controls:GeometryCanvas Width="{Binding Width}"
                                          Height="{Binding Height}"
-                                         Paths="{Binding Paths}"/>
-            </Panel>
-        </Viewbox>
+                                         Paths="{Binding Paths}" />
+
+            </Viewbox>
+        </Panel>
     </DockPanel>
 </Window>
