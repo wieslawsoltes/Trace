@@ -210,9 +210,7 @@ namespace TraceGui.ViewModels
 
             try
             {
-                var code = $"c => {_filter}";
-                var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
-                var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
+                var compiledFilter = await Compile(_filter);
                 filter = compiledFilter;
             }
             catch
@@ -225,6 +223,14 @@ namespace TraceGui.ViewModels
             Width = _source.Width;
             Height = _source.Height;
             Paths = paths;
+        }
+
+        private async Task<Func<Rgba32, bool>> Compile(string filter)
+        {
+            var code = $"c => {filter}";
+            var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
+            var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
+            return compiledFilter;
         }
 
         private Window? GetMainWindow()
