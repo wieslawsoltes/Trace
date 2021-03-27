@@ -58,6 +58,8 @@
             <NumericUpDown Value="{Binding QuantizeUnit}"
                            Increment="1"
                            HorizontalAlignment="Stretch" />
+            <Label Content="Fill color:" />
+            <TextBox Text="{Binding FillColor}"/>
             <Label Content="Color filter:" />
             <TextBox Text="{Binding Filter}"
                      AcceptsReturn="True"
@@ -75,7 +77,8 @@
             <Viewbox Stretch="Uniform">
                 <controls:GeometryCanvas Width="{Binding Width}"
                                          Height="{Binding Height}"
-                                         Paths="{Binding Paths}" />
+                                         Paths="{Binding Paths}"
+                                         Brush="{Binding FillColor}"/>
 
             </Viewbox>
         </Panel>
