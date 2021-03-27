@@ -26,6 +26,7 @@ namespace TraceGui.ViewModels
         private double _alphaMax = 1.0;
         private bool _optiCurve = true;
         private double _optTolerance = 0.2;
+        private uint _quantizeUnit = 10;
 
         public MainWindowViewModel()
         {
@@ -37,6 +38,7 @@ namespace TraceGui.ViewModels
             this.WhenAnyValue(x => x.AlphaMax).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.OptiCurve).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.OptTolerance).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.QuantizeUnit).Subscribe(_ => Trace());
         }
 
         public ICommand OpenCommand { get; }
@@ -95,6 +97,12 @@ namespace TraceGui.ViewModels
         {
             get => _optTolerance;
             set => this.RaiseAndSetIfChanged(ref _optTolerance, value);
+        }
+
+        public uint QuantizeUnit
+        {
+            get => _quantizeUnit;
+            set => this.RaiseAndSetIfChanged(ref _quantizeUnit, value);
         }
 
         private async Task OnOpen()
@@ -176,6 +184,7 @@ namespace TraceGui.ViewModels
                 AlphaMax = _alphaMax,
                 OptiCurve = _optiCurve,
                 OptTolerance = _optTolerance,
+                QuantizeUnit = _quantizeUnit
             };
 
             var paths = PotraceAvalonia.Trace(param, _source).ToList();

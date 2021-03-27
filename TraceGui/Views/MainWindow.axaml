@@ -49,6 +49,10 @@
             <NumericUpDown Value="{Binding OptTolerance}"
                            Increment="0.1"
                            HorizontalAlignment="Stretch"/>
+            <Label Content="QuantizeUnit"/>
+            <NumericUpDown Value="{Binding QuantizeUnit}"
+                           Increment="1"
+                           HorizontalAlignment="Stretch"/>
         </StackPanel>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Panel Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center">
