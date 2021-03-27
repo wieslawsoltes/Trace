@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
 using BitmapToVector;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 using ReactiveUI;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -27,6 +30,7 @@ namespace TraceGui.ViewModels
         private bool _optiCurve = true;
         private double _optTolerance = 0.2;
         private uint _quantizeUnit = 10;
+        private string _filter = "c => c.R < 128";
 
         public MainWindowViewModel()
         {
@@ -39,6 +43,7 @@ namespace TraceGui.ViewModels
             this.WhenAnyValue(x => x.OptiCurve).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.OptTolerance).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.QuantizeUnit).Subscribe(_ => Trace());
+            this.WhenAnyValue(x => x.Filter).Subscribe(_ => Trace());
         }
 
         public ICommand OpenCommand { get; }
@@ -103,6 +108,12 @@ namespace TraceGui.ViewModels
         {
             get => _quantizeUnit;
             set => this.RaiseAndSetIfChanged(ref _quantizeUnit, value);
+        }
+
+        public string Filter
+        {
+            get => _filter;
+            set => this.RaiseAndSetIfChanged(ref _filter, value);
         }
 
         private async Task OnOpen()
@@ -170,7 +181,7 @@ namespace TraceGui.ViewModels
             _source = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
         }
 
-        private void Trace()
+        private async void Trace()
         {
             if (_source is null)
             {
@@ -187,7 +198,22 @@ namespace TraceGui.ViewModels
                 QuantizeUnit = _quantizeUnit
             };
 
-            var paths = PotraceAvalonia.Trace(param, _source).ToList();
+            static bool DefaultFilter(Rgba32 c) => c.R < 128;
+            Func<Rgba32, bool> filter = DefaultFilter;
+
+            try
+            {
+                var code = _filter;
+                var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
+                var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
+                filter = compiledFilter;
+            }
+            catch
+            {
+                Debug.WriteLine("Failed to compile user filter.");
+            }
+
+            var paths = PotraceAvalonia.Trace(param, _source, filter).ToList();
 
             Width = _source.Width;
             Height = _source.Height;

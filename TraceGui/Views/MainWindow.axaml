@@ -58,6 +58,11 @@
             <NumericUpDown Value="{Binding QuantizeUnit}"
                            Increment="1"
                            HorizontalAlignment="Stretch" />
+            <Label Content="Color filter:" />
+            <TextBox Text="{Binding Filter}"
+                     AcceptsReturn="True"
+                     AcceptsTab="True"
+                     VerticalAlignment="Stretch"/>
         </StackPanel>
         <Panel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
             <Panel.Background>

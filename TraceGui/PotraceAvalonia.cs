@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Avalonia.Media;
 using Avalonia.Visuals.Platform;
 using BitmapToVector;
@@ -10,7 +11,7 @@ namespace TraceGui
 {
     public static class PotraceAvalonia
     {
-        public static IEnumerable<PathGeometry> Trace(PotraceParam param, Image<Rgba32> image)
+        public static IEnumerable<PathGeometry> Trace(PotraceParam param, Image<Rgba32> image, Func<Rgba32, bool> filter)
         {
             var width = image.Width;
             var height = image.Height;
@@ -20,9 +21,8 @@ namespace TraceGui
             for (var y = 0; y < height; y++)
             for (var x = 0; x < width; x++)
             {
-                // For speed, only check 1 byte for the pixel.
-                // This is the red color.
-                if (image[x, y].R < 128)
+                var c = image[x, y];
+                if (filter(c))
                 {
                     potraceBitmap.SetBlackUnsafe(x, y);
                 }
