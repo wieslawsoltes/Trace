@@ -30,7 +30,7 @@ namespace TraceGui.ViewModels
         private bool _optiCurve = true;
         private double _optTolerance = 0.2;
         private uint _quantizeUnit = 10;
-        private string _filter = "c => c.R < 128";
+        private string _filter = "c.R < 128";
 
         public MainWindowViewModel()
         {
@@ -203,7 +203,7 @@ namespace TraceGui.ViewModels
 
             try
             {
-                var code = _filter;
+                var code = $"c => {_filter}";
                 var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
                 var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
                 filter = compiledFilter;
