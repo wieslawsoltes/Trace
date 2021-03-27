@@ -45,6 +45,18 @@ namespace TraceGui.ViewModels
             this.WhenAnyValue(x => x.OptTolerance).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.QuantizeUnit).Subscribe(_ => Trace());
             this.WhenAnyValue(x => x.Filter).Subscribe(_ => Trace());
+
+            Task.Run(async () =>
+            {
+                try
+                {
+                    await Compile(_filter);
+                }
+                catch
+                {
+                    Debug.WriteLine("Failed to compile user filter.");
+                }
+            });
         }
 
         public ICommand OpenCommand { get; }
