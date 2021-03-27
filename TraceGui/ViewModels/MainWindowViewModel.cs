@@ -31,6 +31,7 @@ namespace TraceGui.ViewModels
         private double _optTolerance = 0.2;
         private uint _quantizeUnit = 10;
         private string _filter = "c.R < 128";
+        private string _fillColor = "#000000";
 
         public MainWindowViewModel()
         {
@@ -116,6 +117,12 @@ namespace TraceGui.ViewModels
             set => this.RaiseAndSetIfChanged(ref _filter, value);
         }
 
+        public string FillColor
+        {
+            get => _fillColor;
+            set => this.RaiseAndSetIfChanged(ref _fillColor, value);
+        }
+
         private async Task OnOpen()
         {
             var dlg = new OpenFileDialog();
@@ -162,7 +169,7 @@ namespace TraceGui.ViewModels
         {
             if (_paths is not null)
             {
-                SvgWriter.Save(Width, _height, _paths, filename);
+                SvgWriter.Save(Width, _height, _paths, filename, FillColor);
             }
         }
 
