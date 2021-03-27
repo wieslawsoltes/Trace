@@ -30,7 +30,7 @@ namespace TraceGui.ViewModels
         private bool _optiCurve = true;
         private double _optTolerance = 0.2;
         private uint _quantizeUnit = 10;
-        private string _filter = "c.R < 128";
+        private string _filter = "c.R < 128 && c.A > 0";
         private string _fillColor = "#000000";
 
         public MainWindowViewModel()
