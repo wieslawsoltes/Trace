@@ -11,15 +11,24 @@ namespace TraceGui.Controls
         public static readonly StyledProperty<IEnumerable<PathGeometry>?> PathsProperty = 
             AvaloniaProperty.Register<GeometryCanvas, IEnumerable<PathGeometry>?>(nameof(Paths));
 
+        public static readonly StyledProperty<IBrush> BrushProperty = 
+            AvaloniaProperty.Register<GeometryCanvas, IBrush>(nameof(Brush), new SolidColorBrush(Color.Parse("#000000")));
+
         public IEnumerable<PathGeometry>? Paths
         {
             get => GetValue(PathsProperty);
             set => SetValue(PathsProperty, value);
         }
 
+        public IBrush Brush
+        {
+            get => GetValue(BrushProperty);
+            set => SetValue(BrushProperty, value);
+        }
+
         static GeometryCanvas()
         {
-            AffectsRender<GeometryCanvas>(PathsProperty);
+            AffectsRender<GeometryCanvas>(PathsProperty, BrushProperty);
         }
 
         public override void Render(DrawingContext context)
@@ -30,7 +39,7 @@ namespace TraceGui.Controls
             
             if (paths is not null)
             {
-                var brush = new ImmutableSolidColorBrush(Color.Parse("#000000"));
+                var brush = Brush;
 
                 foreach (var path in paths)
                 {
