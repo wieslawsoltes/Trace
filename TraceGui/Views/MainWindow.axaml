@@ -59,12 +59,12 @@
                            Increment="1"
                            HorizontalAlignment="Stretch"/>
         </StackPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Viewbox Stretch="Uniform">
             <Panel Background="WhiteSmoke" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <controls:GeometryCanvas Width="{Binding Width}"
                                          Height="{Binding Height}"
                                          Paths="{Binding Paths}"/>
             </Panel>
-        </ScrollViewer>
+        </Viewbox>
     </DockPanel>
 </Window>
