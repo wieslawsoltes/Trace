@@ -7,7 +7,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Point = Avalonia.Point;
 
-namespace TraceGui
+namespace TraceGui.Model
 {
     public static class PotraceAvalonia
     {

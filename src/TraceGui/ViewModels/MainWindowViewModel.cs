@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using ReactiveUI;
 using SixLabors.ImageSharp.PixelFormats;
+using TraceGui.Model;
 
 namespace TraceGui.ViewModels
 {

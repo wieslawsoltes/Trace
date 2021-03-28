@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Avalonia.Media;
 
-namespace TraceGui
+namespace TraceGui.Model
 {
     static class SvgWriter
     {
