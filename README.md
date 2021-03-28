@@ -1,5 +1,7 @@
 # Trace
 
+[![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Trace)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=84)
+
 Trace is an application for transforming bitmaps into vector graphics using [BitmapToVector](https://github.com/daltonks/BitmapToVector) library.
 
 ![](images/TraceGui.png)
