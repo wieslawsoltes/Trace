@@ -56,6 +56,10 @@ The opttolerance parameter defines the amount of error allowed in this simplific
 segments, at the expense of less accuracy. The useful range is from 0 to infinity, although in practice one would hardly choose values greater than 1 or so. For most
 purposes, the default value is a good tradeoff between space and accuracy.
 
+### Fill color
+
+The fill color used for generated output path's. The default is hex value `#000000`. It also accepts named colors like `Red`, `Black` etc.
+
 ### Color filter
 
 Color filter is an C# expression used to filter input bitmap colors. 
