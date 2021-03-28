@@ -10,6 +10,40 @@ Trace is an application for transforming bitmaps into vector graphics using [Bit
 * [Potrace](http://potrace.sourceforge.net/) Transforming bitmaps into vector graphics.
 * [mkbitmap](http://potrace.sourceforge.net/mkbitmap.html) Transform images into bitmaps with scaling and filtering.
 
+# Building
+
+Download and install [.NET 5.0 SDK](https://dotnet.microsoft.com/download).
+
+### Build
+
+```bash
+dotnet build ./src/TraceGui/TraceGui.csproj -c Release
+```
+
+### Run
+
+```bash
+dotnet run --project ./src/TraceGui/TraceGui.csproj -c Release
+```
+
+### Publish
+
+```bash
+dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r win7-x64 -o TraceGui-win7-x64
+```
+
+```bash
+dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r debian.8-x64 -o TraceGui-debian.8-x64
+```
+
+```bash
+dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r ubuntu.14.04-x64 -o TraceGui-ubuntu.14.04-x64
+```
+
+```bash
+dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r osx.10.12-x64 -o TraceGui-osx.10.12-x64
+```
+
 # Licensing
 
 Trace is licensed under the [GPL-3.0 License](LICENSE).
