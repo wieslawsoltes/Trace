@@ -2,6 +2,10 @@
 
 [![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Trace)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=84)
 
+[![GitHub release](https://img.shields.io/github/release/wieslawsoltes/trace.svg)](https://github.com/wieslawsoltes/trace)
+[![Github All Releases](https://img.shields.io/github/downloads/wieslawsoltes/trace/total.svg)](https://github.com/wieslawsoltes/trace)
+[![Github Releases](https://img.shields.io/github/downloads/wieslawsoltes/trace/latest/total.svg)](https://github.com/wieslawsoltes/trace)
+
 Trace is an application for transforming bitmaps into vector graphics using [BitmapToVector](https://github.com/daltonks/BitmapToVector) library.
 
 ![](images/TraceGui.png)
