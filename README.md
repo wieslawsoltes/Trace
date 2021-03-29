@@ -1,6 +1,7 @@
 # Trace
 
 [![Build status](https://dev.azure.com/wieslawsoltes/GitHub/_apis/build/status/Trace)](https://dev.azure.com/wieslawsoltes/GitHub/_build/latest?definitionId=84)
+[![CI](https://github.com/wieslawsoltes/Trace/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/wieslawsoltes/Trace/actions/workflows/build.yml)
 
 [![GitHub release](https://img.shields.io/github/release/wieslawsoltes/trace.svg)](https://github.com/wieslawsoltes/trace)
 [![Github All Releases](https://img.shields.io/github/downloads/wieslawsoltes/trace/total.svg)](https://github.com/wieslawsoltes/trace)
