@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BitmapToVector.SkiaSharp" Version="1.16.2" />
+      <PackageReference Include="BitmapToVector.SkiaSharp" Version="1.16.3" />
     </ItemGroup>
 
 </Project>
