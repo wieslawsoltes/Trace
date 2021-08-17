@@ -9,10 +9,10 @@
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.10.6" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.6" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.6" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.6" />
+        <PackageReference Include="Avalonia" Version="0.10.7" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
         <PackageReference Include="BitmapToVector" Version="1.16.3" />
         <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
     </ItemGroup>
