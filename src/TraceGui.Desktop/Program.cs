@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace TraceGui
+namespace TraceGui.Desktop
 {
     class Program
     {

@@ -22,6 +22,13 @@ namespace TraceGui
                     DataContext = new MainWindowViewModel(),
                 };
             }
+            else if (ApplicationLifetime is ISingleViewApplicationLifetime single)
+            {
+                single.MainView = new MainView
+                {
+                    DataContext = new MainWindowViewModel(),
+                };
+            }
 
             base.OnFrameworkInitializationCompleted();
         }

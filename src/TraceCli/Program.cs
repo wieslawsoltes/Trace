@@ -5,7 +5,7 @@ using BitmapToVector;
 using BitmapToVector.SkiaSharp;
 using SkiaSharp;
 
-namespace Trace
+namespace TraceCli
 {
     internal static class Program
     {
@@ -13,7 +13,7 @@ namespace Trace
         {
             if (args.Length < 1 || args.Length > 2)
             {
-                Console.WriteLine("Usage: Trace <filename> [filename.svg]");
+                Console.WriteLine("Usage: TraceCli <filename> [filename.svg]");
                 return;
             }
             var inputFileName = args[0];

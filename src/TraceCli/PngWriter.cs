@@ -2,7 +2,7 @@
 using System.IO;
 using SkiaSharp;
 
-namespace Trace
+namespace TraceCli
 {
     static class PngWriter
     {

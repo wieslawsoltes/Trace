@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using SkiaSharp;
 
-namespace Trace
+namespace TraceCli
 {
     static class SvgWriter
     {
