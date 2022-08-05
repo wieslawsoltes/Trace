@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
 
-namespace TraceGui.ViewModels
+namespace TraceGui.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
-    public class ViewModelBase : ReactiveObject
-    {
-    }
 }

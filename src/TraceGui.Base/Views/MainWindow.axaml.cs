@@ -2,21 +2,20 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace TraceGui.Views
-{
-    public class MainWindow : Window
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-        }
+namespace TraceGui.Views;
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+public class MainWindow : Window
+{
+    public MainWindow()
+    {
+        InitializeComponent();
+#if DEBUG
+        this.AttachDevTools();
+#endif
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 }

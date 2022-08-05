@@ -4,33 +4,32 @@ using Avalonia.Markup.Xaml;
 using TraceGui.ViewModels;
 using TraceGui.Views;
 
-namespace TraceGui
+namespace TraceGui;
+
+public class App : Application
 {
-    public class App : Application
+    public override void Initialize()
     {
-        public override void Initialize()
+        AvaloniaXamlLoader.Load(this);
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            AvaloniaXamlLoader.Load(this);
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = new MainWindowViewModel(),
+            };
+        }
+        else if (ApplicationLifetime is ISingleViewApplicationLifetime single)
+        {
+            single.MainView = new MainView
+            {
+                DataContext = new MainWindowViewModel(),
+            };
         }
 
-        public override void OnFrameworkInitializationCompleted()
-        {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-            }
-            else if (ApplicationLifetime is ISingleViewApplicationLifetime single)
-            {
-                single.MainView = new MainView
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-            }
-
-            base.OnFrameworkInitializationCompleted();
-        }
+        base.OnFrameworkInitializationCompleted();
     }
 }

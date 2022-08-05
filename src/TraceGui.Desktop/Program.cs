@@ -2,18 +2,17 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace TraceGui.Desktop
-{
-    class Program
-    {
-        [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+namespace TraceGui.Desktop;
 
-        public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace()
-                .UseReactiveUI();
-    }
+class Program
+{
+    [STAThread]
+    public static void Main(string[] args) => BuildAvaloniaApp()
+        .StartWithClassicDesktopLifetime(args);
+
+    public static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .LogToTrace()
+            .UseReactiveUI();
 }
