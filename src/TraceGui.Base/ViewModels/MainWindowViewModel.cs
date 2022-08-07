@@ -18,7 +18,8 @@ using TraceGui.Model;
 
 namespace TraceGui.ViewModels;
 
-public partial class MainWindowViewModel : ViewModelBase
+[ObservableObject]
+public partial class MainWindowViewModel
 {
     private SixLabors.ImageSharp.Image<Rgba32>? _source;
     [ObservableProperty] private string? _fileName;
@@ -36,13 +37,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel()
     {
-        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.TurnPolicy).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.AlphaMax).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.OptiCurve).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.OptTolerance).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.QuantizeUnit).DistinctUntilChanged().Subscribe(_ => Trace());
-        this.WhenChanged(x => x.Filter).DistinctUntilChanged().Subscribe(_ => Trace());
+        // ReSharper disable AsyncVoidLambda
+        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe( async _ => await Trace());
+        this.WhenChanged(x => x.TurnPolicy).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        this.WhenChanged(x => x.AlphaMax).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        this.WhenChanged(x => x.OptiCurve).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        this.WhenChanged(x => x.OptTolerance).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        this.WhenChanged(x => x.QuantizeUnit).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        this.WhenChanged(x => x.Filter).DistinctUntilChanged().Subscribe(async _ => await Trace());
+        // ReSharper restore AsyncVoidLambda
 
         Task.Run(async () =>
         {
@@ -98,7 +101,7 @@ public partial class MainWindowViewModel : ViewModelBase
             try
             {
                 await using var stream = await file.OpenReadAsync();
-                OpenStream(stream, file.Name);
+                await OpenStream(stream, file.Name);
             }
             catch (Exception ex)
             {
@@ -149,11 +152,11 @@ public partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void OpenStream(Stream stream, string filename)
+    public async Task OpenStream(Stream stream, string filename)
     {
         Decode(stream);
 
-        Trace();
+        await Trace();
 
         FileName = filename;
     }
@@ -164,7 +167,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _source = SixLabors.ImageSharp.Image.Load<Rgba32>(stream);
     }
 
-    private async void Trace()
+    private async Task Trace()
     {
         if (_source is null)
         {

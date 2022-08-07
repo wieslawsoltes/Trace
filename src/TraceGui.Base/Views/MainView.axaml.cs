@@ -31,7 +31,7 @@ public class MainView : UserControl
         }
     }
 
-    private void Drop(object? sender, DragEventArgs e)
+    private async void Drop(object? sender, DragEventArgs e)
     {
         if (e.Data.Contains(DataFormats.FileNames))
         {
@@ -40,8 +40,8 @@ public class MainView : UserControl
             {
                 if (DataContext is MainWindowViewModel vm)
                 {
-                    using var stream = File.OpenRead(fileName);
-                    vm.OpenStream(stream, fileName);
+                    await using var stream = File.OpenRead(fileName);
+                    await vm.OpenStream(stream, fileName);
                 }
             }
         }
