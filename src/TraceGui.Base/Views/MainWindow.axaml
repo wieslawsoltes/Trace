@@ -7,6 +7,6 @@
         x:Class="TraceGui.Views.MainWindow"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Icon="/Assets/avalonia-logo.ico"
-        Title="TraceGui">
+        Title="Trace">
   <views:MainView />
 </Window>
