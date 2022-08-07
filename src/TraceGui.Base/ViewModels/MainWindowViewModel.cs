@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
@@ -12,7 +11,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using ReactiveMarbles.PropertyChanged;
 using SixLabors.ImageSharp.PixelFormats;
 using TraceGui.Model;
 
@@ -24,34 +22,19 @@ public partial class MainWindowViewModel
     private SixLabors.ImageSharp.Image<Rgba32>? _source;
     [ObservableProperty] private string? _fileName;
     [ObservableProperty] private IEnumerable<PathGeometry>? _paths;
+    [ObservableProperty] private OptionsViewModel _options;
     [ObservableProperty] private int _width;
     [ObservableProperty] private int _height;
-    [ObservableProperty] private int _turdSize = 2;
-    [ObservableProperty] private int _turnPolicy = 4;
-    [ObservableProperty] private double _alphaMax = 1.0;
-    [ObservableProperty] private bool _optiCurve = true;
-    [ObservableProperty] private double _optTolerance = 0.2;
-    [ObservableProperty] private uint _quantizeUnit = 10;
-    [ObservableProperty] private string _filter = "c.R < 128 && c.A > 0";
-    [ObservableProperty] private string _fillColor = "#000000";
 
     public MainWindowViewModel()
     {
-        // ReSharper disable AsyncVoidLambda
-        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe( async _ => await Trace());
-        this.WhenChanged(x => x.TurnPolicy).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        this.WhenChanged(x => x.AlphaMax).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        this.WhenChanged(x => x.OptiCurve).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        this.WhenChanged(x => x.OptTolerance).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        this.WhenChanged(x => x.QuantizeUnit).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        this.WhenChanged(x => x.Filter).DistinctUntilChanged().Subscribe(async _ => await Trace());
-        // ReSharper restore AsyncVoidLambda
+        _options = new OptionsViewModel(Trace);
 
         Task.Run(async () =>
         {
             try
             {
-                await Compile(_filter);
+                await Compile(_options.Filter);
             }
             catch
             {
@@ -148,7 +131,7 @@ public partial class MainWindowViewModel
     {
         if (_paths is not null)
         {
-            await SvgWriter.Save(Width, _height, _paths, stream, FillColor);
+            await SvgWriter.Save(Width, Height, _paths, stream, _options.FillColor);
         }
     }
 
@@ -176,12 +159,12 @@ public partial class MainWindowViewModel
 
         var param = new PotraceParam()
         {
-            TurdSize = _turdSize,
-            TurnPolicy = _turnPolicy,
-            AlphaMax = _alphaMax,
-            OptiCurve = _optiCurve,
-            OptTolerance = _optTolerance,
-            QuantizeUnit = _quantizeUnit
+            TurdSize = _options.TurdSize,
+            TurnPolicy = _options.TurnPolicy,
+            AlphaMax = _options.AlphaMax,
+            OptiCurve = _options.OptiCurve,
+            OptTolerance = _options.OptTolerance,
+            QuantizeUnit = _options.QuantizeUnit
         };
 
         static bool DefaultFilter(Rgba32 c) => c.R < 128;
@@ -189,7 +172,7 @@ public partial class MainWindowViewModel
 
         try
         {
-            var compiledFilter = await Compile(_filter);
+            var compiledFilter = await Compile(_options.Filter);
             filter = compiledFilter;
         }
         catch

@@ -29,7 +29,7 @@
         </Panel>
         <Separator Classes="h" />
       </StackPanel>
-      <views:OptionsView Grid.Row="1"  />
+      <views:OptionsView DataContext="{Binding Options}" Grid.Row="1"  />
     </Grid>
     <Separator Grid.Column="1" Classes="v" />
     <views:PreviewView Grid.Column="2" />

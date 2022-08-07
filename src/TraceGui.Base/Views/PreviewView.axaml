@@ -22,7 +22,7 @@
       <controls:GeometryCanvas Width="{Binding Width}"
                                Height="{Binding Height}"
                                Paths="{Binding Paths}"
-                               Brush="{Binding FillColor}" />
+                               Brush="{Binding Options.FillColor}" />
 
     </Viewbox>
   </Panel>
