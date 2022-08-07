@@ -41,7 +41,7 @@ public class MainView : UserControl
                 if (DataContext is MainWindowViewModel vm)
                 {
                     using var stream = File.OpenRead(fileName);
-                    vm.Load(stream, fileName);
+                    vm.OpenStream(stream, fileName);
                 }
             }
         }

@@ -3,47 +3,46 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using BitmapToVector;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using ReactiveUI;
+using ReactiveMarbles.PropertyChanged;
 using SixLabors.ImageSharp.PixelFormats;
 using TraceGui.Model;
 
 namespace TraceGui.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+public partial class MainWindowViewModel : ViewModelBase
 {
     private SixLabors.ImageSharp.Image<Rgba32>? _source;
-    private string? _fileName;
-    private IEnumerable<PathGeometry>? _paths;
-    private int _width;
-    private int _height;
-    private int _turdSize = 2;
-    private int _turnPolicy = 4;
-    private double _alphaMax = 1.0;
-    private bool _optiCurve = true;
-    private double _optTolerance = 0.2;
-    private uint _quantizeUnit = 10;
-    private string _filter = "c.R < 128 && c.A > 0";
-    private string _fillColor = "#000000";
+    [ObservableProperty] private string? _fileName;
+    [ObservableProperty] private IEnumerable<PathGeometry>? _paths;
+    [ObservableProperty] private int _width;
+    [ObservableProperty] private int _height;
+    [ObservableProperty] private int _turdSize = 2;
+    [ObservableProperty] private int _turnPolicy = 4;
+    [ObservableProperty] private double _alphaMax = 1.0;
+    [ObservableProperty] private bool _optiCurve = true;
+    [ObservableProperty] private double _optTolerance = 0.2;
+    [ObservableProperty] private uint _quantizeUnit = 10;
+    [ObservableProperty] private string _filter = "c.R < 128 && c.A > 0";
+    [ObservableProperty] private string _fillColor = "#000000";
 
     public MainWindowViewModel()
     {
-        OpenCommand = ReactiveCommand.CreateFromTask(async () => await OnOpen());
-        SaveCommand = ReactiveCommand.CreateFromTask(async () => await OnSave());
-
-        this.WhenAnyValue(x => x.TurdSize).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.TurnPolicy).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.AlphaMax).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.OptiCurve).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.OptTolerance).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.QuantizeUnit).Subscribe(_ => Trace());
-        this.WhenAnyValue(x => x.Filter).Subscribe(_ => Trace());
+        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.TurnPolicy).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.AlphaMax).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.OptiCurve).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.OptTolerance).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.QuantizeUnit).DistinctUntilChanged().Subscribe(_ => Trace());
+        this.WhenChanged(x => x.Filter).DistinctUntilChanged().Subscribe(_ => Trace());
 
         Task.Run(async () =>
         {
@@ -56,82 +55,6 @@ public class MainWindowViewModel : ViewModelBase
                 Debug.WriteLine("Failed to compile user filter.");
             }
         });
-    }
-
-    public ICommand OpenCommand { get; }
-
-    public ICommand SaveCommand { get; }
-
-    public string? FileName
-    {
-        get => _fileName;
-        set => this.RaiseAndSetIfChanged(ref _fileName, value);
-    }
-
-    public IEnumerable<PathGeometry>? Paths
-    {
-        get => _paths;
-        set => this.RaiseAndSetIfChanged(ref _paths, value);
-    }
-
-    public int Width
-    {
-        get => _width;
-        set => this.RaiseAndSetIfChanged(ref _width, value);
-    }
-
-    public int Height
-    {
-        get => _height;
-        set => this.RaiseAndSetIfChanged(ref _height, value);
-    }
-
-    public int TurdSize
-    {
-        get => _turdSize;
-        set => this.RaiseAndSetIfChanged(ref _turdSize, value);
-    }
-        
-    public int TurnPolicy
-    {
-        get => _turnPolicy;
-        set => this.RaiseAndSetIfChanged(ref _turnPolicy, value);
-    }
-        
-    public double AlphaMax
-    {
-        get => _alphaMax;
-        set => this.RaiseAndSetIfChanged(ref _alphaMax, value);
-    }
-        
-    public bool OptiCurve
-    {
-        get => _optiCurve;
-        set => this.RaiseAndSetIfChanged(ref _optiCurve, value);
-    }
-
-    public double OptTolerance
-    {
-        get => _optTolerance;
-        set => this.RaiseAndSetIfChanged(ref _optTolerance, value);
-    }
-
-    public uint QuantizeUnit
-    {
-        get => _quantizeUnit;
-        set => this.RaiseAndSetIfChanged(ref _quantizeUnit, value);
-    }
-
-    public string Filter
-    {
-        get => _filter;
-        set => this.RaiseAndSetIfChanged(ref _filter, value);
-    }
-
-    public string FillColor
-    {
-        get => _fillColor;
-        set => this.RaiseAndSetIfChanged(ref _fillColor, value);
     }
 
     private List<FilePickerFileType> GetOpenFileTypes()
@@ -152,7 +75,8 @@ public class MainWindowViewModel : ViewModelBase
         };
     }
     
-    private async Task OnOpen()
+    [RelayCommand]
+    private async Task Open()
     {
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
@@ -174,7 +98,7 @@ public class MainWindowViewModel : ViewModelBase
             try
             {
                 await using var stream = await file.OpenReadAsync();
-                Load(stream, file.Name);
+                OpenStream(stream, file.Name);
             }
             catch (Exception ex)
             {
@@ -184,7 +108,8 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private async Task OnSave()
+    [RelayCommand]
+    private async Task Save()
     {
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
@@ -206,7 +131,7 @@ public class MainWindowViewModel : ViewModelBase
             try
             {
                 await using var stream = await file.OpenWriteAsync();
-                await Save(stream);
+                await SaveStream(stream);
             }
             catch (Exception ex)
             {
@@ -216,7 +141,7 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private async Task Save(Stream stream)
+    public async Task SaveStream(Stream stream)
     {
         if (_paths is not null)
         {
@@ -224,7 +149,7 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void Load(Stream stream, string filename)
+    public void OpenStream(Stream stream, string filename)
     {
         Decode(stream);
 
