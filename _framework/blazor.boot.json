@@ -114,8 +114,8 @@
       "System.Threading.ThreadPool.dll": "sha256-v36FQF4maVjAtyNAvuf67x6ZPNdj76sWWUnqVEohwaM=",
       "System.Xml.ReaderWriter.dll": "sha256-cV\/2uEoxTUmyNgzh5rih6y0D9ahF522vnMMvFJGD4oo=",
       "System.Xml.XDocument.dll": "sha256-Fbr9zrQnq5uPgrlNeaab+khM+gX3Ns9obnRm3WPa\/gk=",
-      "TraceGui.Base.dll": "sha256-IPEkIlKUSJz+KPSEBrAU1pK8M\/hW26KDKSCR6QjSyF0=",
-      "TraceGui.Web.dll": "sha256-yHcwlD\/IOggyAkyMJ0uezDayDqEos84Ty2kVEk\/1IuU="
+      "TraceGui.Base.dll": "sha256-EI26IpE0qlwucAnKz2m3RFJ4ZFwoz9JiHu\/vBgVo04I=",
+      "TraceGui.Web.dll": "sha256-L04uIUsKwjddiPX7JctcrHiYlKzYKI+pwnak39fdwvo="
     },
     "extensions": null,
     "lazyAssembly": null,
