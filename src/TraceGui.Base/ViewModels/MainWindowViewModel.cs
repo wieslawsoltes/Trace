@@ -5,10 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using BitmapToVector;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
@@ -136,69 +134,109 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _fillColor, value);
     }
 
+    private List<FilePickerFileType> GetOpenFileTypes()
+    {
+        return new List<FilePickerFileType>
+        {
+            StorageService.ImageAll,
+            StorageService.All
+        };
+    }
+
+    private static List<FilePickerFileType> GetSaveFileTypes()
+    {
+        return new List<FilePickerFileType>
+        {
+            StorageService.ImageSvg,
+            StorageService.All
+        };
+    }
+    
     private async Task OnOpen()
     {
-        var dlg = new OpenFileDialog();
-
-        dlg.Filters.Add(new FileDialogFilter()
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
         {
-            Name = "Supported Files (*.png;*.jpg;*.jpeg;*.bmp)", 
-            Extensions = new List<string> {"png", "jpg", "jpeg", "bmp"}
+            return;
+        }
+
+        var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open image",
+            FileTypeFilter = GetOpenFileTypes(),
+            AllowMultiple = false
         });
 
-        dlg.Filters.Add(new FileDialogFilter()
-        {
-            Name = "All Files", 
-            Extensions = new List<string> {"*"}
-        });
+        var file = result.FirstOrDefault();
 
-        var result = await dlg.ShowAsync(GetMainWindow());
-        if (result is not null && result.Length == 1)
+        if (file is not null && file.CanOpenRead)
         {
-            Load(result[0]);
+            try
+            {
+                await using var stream = await file.OpenReadAsync();
+                Load(stream, file.Name);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
     }
 
     private async Task OnSave()
     {
-        var dlg = new SaveFileDialog();
-
-        dlg.Filters.Add(new FileDialogFilter()
+        var storageProvider = StorageService.GetStorageProvider();
+        if (storageProvider is null)
         {
-            Name = "Svg Files (*.svg)", 
-            Extensions = new List<string> {"svg"}
+            return;
+        }
+
+        var file = await storageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+        {
+            Title = "Save drawing",
+            FileTypeChoices = GetSaveFileTypes(),
+            SuggestedFileName = Path.GetFileNameWithoutExtension(_fileName),
+            DefaultExtension = "svg",
+            ShowOverwritePrompt = true
         });
 
-        dlg.InitialFileName = Path.GetFileNameWithoutExtension(_fileName);
-
-        var result = await dlg.ShowAsync(GetMainWindow());
-        if (result is not null)
+        if (file is not null && file.CanOpenWrite)
         {
-            Save(result);
+            try
+            {
+                await using var stream = await file.OpenWriteAsync();
+                await Save(stream);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                Debug.WriteLine(ex.StackTrace);
+            }
         }
     }
 
-    private void Save(string filename)
+    private async Task Save(Stream stream)
     {
         if (_paths is not null)
         {
-            SvgWriter.Save(Width, _height, _paths, filename, FillColor);
+            await SvgWriter.Save(Width, _height, _paths, stream, FillColor);
         }
     }
 
-    public void Load(string filename)
+    public void Load(Stream stream, string filename)
     {
-        Decode(filename);
+        Decode(stream);
 
         Trace();
 
         FileName = filename;
     }
 
-    private void Decode(string filename)
+    private void Decode(Stream stream)
     {
         _source?.Dispose();
-        _source = SixLabors.ImageSharp.Image.Load<Rgba32>(filename);
+        _source = SixLabors.ImageSharp.Image.Load<Rgba32>(stream);
     }
 
     private async void Trace()
@@ -219,7 +257,7 @@ public class MainWindowViewModel : ViewModelBase
         };
 
         static bool DefaultFilter(Rgba32 c) => c.R < 128;
-        Func<Rgba32, bool> filter = DefaultFilter;
+        var filter = DefaultFilter;
 
         try
         {
@@ -244,10 +282,5 @@ public class MainWindowViewModel : ViewModelBase
         var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
         var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
         return compiledFilter;
-    }
-
-    private Window? GetMainWindow()
-    {
-        return (Application.Current.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow;
     }
 }

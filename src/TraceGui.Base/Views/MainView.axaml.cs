@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -39,7 +40,8 @@ public class MainView : UserControl
             {
                 if (DataContext is MainWindowViewModel vm)
                 {
-                    vm.Load(fileName);
+                    using var stream = File.OpenRead(fileName);
+                    vm.Load(stream, fileName);
                 }
             }
         }

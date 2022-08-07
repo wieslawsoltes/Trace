@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Media;
 
 namespace TraceGui.Model;
@@ -24,9 +25,10 @@ static class SvgWriter
         return sb.ToString();
     }
 
-    public static void Save(int width, int height, IEnumerable<PathGeometry> paths, string filename, string fillColor = "#000000")
+    public static async Task Save(int width, int height, IEnumerable<PathGeometry> paths, Stream stream, string fillColor = "#000000")
     {
         var svg = ToSvg(width, height, paths, fillColor);
-        File.WriteAllText(filename, svg);
+        await using var writer = new StreamWriter(stream);
+        await writer.WriteAsync(svg);
     }
 }
