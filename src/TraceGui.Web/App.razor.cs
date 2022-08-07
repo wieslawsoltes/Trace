@@ -1,4 +1,3 @@
-using Avalonia.ReactiveUI;
 using Avalonia.Web.Blazor;
 
 namespace TraceGui.Web;
@@ -10,7 +9,6 @@ public partial class App
         base.OnParametersSet();
 
         WebAppBuilder.Configure<TraceGui.App>()
-            .UseReactiveUI()
             .SetupWithSingleViewLifetime();
     }
 }
