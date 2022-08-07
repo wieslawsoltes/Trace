@@ -5,6 +5,7 @@
         xmlns:views="clr-namespace:TraceGui.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="TraceGui.Views.MainWindow"
+        MinWidth="400" MinHeight="300"
         WindowState="Normal" WindowStartupLocation="CenterScreen"
         Icon="/Assets/avalonia-logo.ico"
         Title="Trace">
