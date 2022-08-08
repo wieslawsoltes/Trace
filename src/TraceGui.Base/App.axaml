@@ -7,7 +7,7 @@
     <local:ViewLocator />
   </Application.DataTemplates>
   <Application.Styles>
-    <FluentTheme Mode="Light" />
+    <FluentTheme Mode="Dark" />
     <Style Selector="Button.b">
       <Setter Property="CornerRadius" Value="0" />
       <Setter Property="Padding" Value="12,8,12,8" />
