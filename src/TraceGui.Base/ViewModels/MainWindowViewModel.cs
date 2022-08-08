@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,8 +120,8 @@ public partial class MainWindowViewModel
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
         }
     }
@@ -177,7 +176,7 @@ public partial class MainWindowViewModel
         }
         catch
         {
-            Debug.WriteLine("Failed to compile user filter.");
+            Console.WriteLine("Failed to compile user filter.");
         }
 
         var paths = PotraceAvalonia.Trace(param, _source, filter).ToList();
