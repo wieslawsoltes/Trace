@@ -16,22 +16,40 @@
     <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S" />
   </UserControl.KeyBindings>
   <Grid ColumnDefinitions="240,Auto,*">
-    <Grid Grid.Column="0" RowDefinitions="Auto,*">
-      <StackPanel Grid.Row="0">
-        <Grid ColumnDefinitions="50*,Auto,50*" HorizontalAlignment="Stretch">
-          <Button Grid.Column="0" Classes="b" Content="_Open" Command="{Binding OpenCommand}" />
-          <Separator Grid.Column="1" Classes="v" />
-          <Button Grid.Column="2" Classes="b" Content="_Save" Command="{Binding SaveCommand}" />
-        </Grid>
-        <Separator Classes="h" />
-        <Panel Background="WhiteSmoke">
-          <Label Content="Algorithm Options" HorizontalAlignment="Center" Margin="8" />
-        </Panel>
-        <Separator Classes="h" />
-      </StackPanel>
-      <views:OptionsView DataContext="{Binding Options}" Grid.Row="1"  />
-    </Grid>
-    <Separator Grid.Column="1" Classes="v" />
-    <views:PreviewView Grid.Column="2" />
+    <Panel Grid.Column="0">
+      <ExperimentalAcrylicBorder>
+        <ExperimentalAcrylicBorder.Material>
+          <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                       TintColor="{DynamicResource SystemAltLowColor}"
+                                       TintOpacity="1"
+                                       FallbackColor="{DynamicResource SystemAltLowColor}"
+                                       MaterialOpacity="0.6" />
+        </ExperimentalAcrylicBorder.Material>
+      </ExperimentalAcrylicBorder>
+      <Grid RowDefinitions="36, Auto,*">
+        <StackPanel Grid.Row="1">
+          <Separator Classes="h" />
+          <Grid ColumnDefinitions="50*,Auto,50*" HorizontalAlignment="Stretch">
+            <Button Grid.Column="0" Classes="b" Content="_Open" Command="{Binding OpenCommand}" />
+            <Separator Grid.Column="1" Classes="v" />
+            <Button Grid.Column="2" Classes="b" Content="_Save" Command="{Binding SaveCommand}" />
+          </Grid>
+          <Separator Classes="h" />
+          <Panel>
+            <Label Content="Algorithm Options" HorizontalAlignment="Center" Margin="8" />
+          </Panel>
+          <Separator Classes="h" />
+        </StackPanel>
+        <views:OptionsView DataContext="{Binding Options}" Grid.Row="2"  />
+      </Grid>
+    </Panel>
+    <!-- <Separator Grid.Column="1" Margin="0,36,0,0" Classes="v" /> -->
+    <DockPanel Grid.Column="2">
+      <Panel Background="{DynamicResource SystemChromeMediumColor}" 
+             IsHitTestVisible="False"
+             Height="36"
+             DockPanel.Dock="Top" />
+      <views:PreviewView Background="{DynamicResource SystemChromeMediumColor}" />
+    </DockPanel>
   </Grid>
 </UserControl>
