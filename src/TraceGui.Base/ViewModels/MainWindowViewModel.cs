@@ -38,7 +38,7 @@ public partial class MainWindowViewModel
             }
             catch
             {
-                Debug.WriteLine("Failed to compile user filter.");
+                Console.WriteLine("Failed to compile user filter.");
             }
         });
     }
@@ -88,8 +88,8 @@ public partial class MainWindowViewModel
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
         }
     }
