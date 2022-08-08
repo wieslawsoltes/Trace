@@ -1,15 +1,20 @@
-﻿using System;
+﻿#define USE_DYNAMIC_LINQ
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using BitmapToVector;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+#if !USE_DYNAMIC_LINQ
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+#endif
 using SixLabors.ImageSharp.PixelFormats;
 using TraceGui.Model;
 
@@ -188,9 +193,22 @@ public partial class MainWindowViewModel
 
     private async Task<Func<Rgba32, bool>> Compile(string filter)
     {
+#if USE_DYNAMIC_LINQ
+        return await Task.Run(() =>
+        {
+            var code = $"c => {filter}";
+            Expression<Func<Rgba32, bool>> e = DynamicExpressionParser.ParseLambda<Rgba32, bool>(
+                new ParsingConfig(),
+                true,
+                code);
+            var compiledFilter = e.Compile();
+            return compiledFilter;
+        });
+#else
         var code = $"c => {filter}";
         var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
         var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
         return compiledFilter;
+#endif
     }
 }
