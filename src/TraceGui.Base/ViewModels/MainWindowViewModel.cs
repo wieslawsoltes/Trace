@@ -137,17 +137,17 @@ public partial class MainWindowViewModel
 
     public async Task OpenStream(Stream stream, string filename)
     {
-        Decode(stream);
+        await Decode(stream);
 
         await Trace();
 
         FileName = filename;
     }
 
-    private void Decode(Stream stream)
+    private async Task Decode(Stream stream)
     {
         _source?.Dispose();
-        _source = SixLabors.ImageSharp.Image.Load<Rgba32>(stream);
+        _source = await SixLabors.ImageSharp.Image.LoadAsync<Rgba32>(stream);
     }
 
     private async Task Trace()
