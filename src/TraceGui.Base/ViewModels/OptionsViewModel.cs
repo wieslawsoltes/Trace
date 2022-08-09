@@ -25,7 +25,7 @@ public partial class OptionsViewModel
     public OptionsViewModel(Func<Task> trace)
     {
         // ReSharper disable AsyncVoidLambda
-        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe( async _ => await trace());
+        this.WhenChanged(x => x.TurdSize).DistinctUntilChanged().Subscribe(async _ => await trace());
         this.WhenChanged(x => x.TurnPolicy).DistinctUntilChanged().Subscribe(async _ => await trace());
         this.WhenChanged(x => x.AlphaMax).DistinctUntilChanged().Subscribe(async _ => await trace());
         this.WhenChanged(x => x.OptiCurve).DistinctUntilChanged().Subscribe(async _ => await trace());
