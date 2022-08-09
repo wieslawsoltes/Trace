@@ -10,7 +10,7 @@
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>
-  <Panel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8">
+  <Panel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8,0,8,8">
     <Panel Background="#FFF5F5F5"/>
     <Panel>
       <Panel.Background>
