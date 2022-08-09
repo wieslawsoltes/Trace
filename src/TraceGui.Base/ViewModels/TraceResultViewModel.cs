@@ -31,7 +31,7 @@ public partial class TraceResultViewModel : IDisposable
     public TraceResultViewModel()
     {
     }
-    
+
     public TraceResultViewModel(SixLabors.ImageSharp.Image<Rgba32> source, string fileName)
     {
         _source = source;
