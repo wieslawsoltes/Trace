@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace TraceGui.Views;
 
-public class PreviewView : UserControl
+public class TraceResultView : UserControl
 {
-    public PreviewView()
+    public TraceResultView()
     {
         InitializeComponent();
     }

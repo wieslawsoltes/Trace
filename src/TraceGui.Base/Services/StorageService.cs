@@ -4,7 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 
-namespace TraceGui.ViewModels;
+namespace TraceGui.Services;
 
 internal static class StorageService
 {

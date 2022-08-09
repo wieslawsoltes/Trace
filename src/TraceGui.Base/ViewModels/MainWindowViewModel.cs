@@ -1,44 +1,32 @@
-﻿#define USE_DYNAMIC_LINQ
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
-using BitmapToVector;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-#if !USE_DYNAMIC_LINQ
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
-#endif
-using SixLabors.ImageSharp.PixelFormats;
-using TraceGui.Model;
+using TraceGui.Services;
 
 namespace TraceGui.ViewModels;
 
 [ObservableObject]
 public partial class MainWindowViewModel
 {
-    private SixLabors.ImageSharp.Image<Rgba32>? _source;
-    [ObservableProperty] private string? _fileName;
-    [ObservableProperty] private IEnumerable<PathGeometry>? _paths;
     [ObservableProperty] private OptionsViewModel _options;
-    [ObservableProperty] private int _width;
-    [ObservableProperty] private int _height;
+    [ObservableProperty] private TraceResultViewModel? _traceResult;
+    [ObservableProperty] private SourceImageViewModel? _sourceImage;
 
     public MainWindowViewModel()
     {
-        _options = new OptionsViewModel(Trace);
+        _options = new OptionsViewModel(Trace, Redraw);
 
         Task.Run(async () =>
         {
             try
             {
-                await Compile(_options.Filter);
+                await TraceResultViewModel.Compile(_options.Filter);
             }
             catch
             {
@@ -49,22 +37,57 @@ public partial class MainWindowViewModel
 
     private List<FilePickerFileType> GetOpenFileTypes()
     {
-        return new List<FilePickerFileType>
-        {
-            StorageService.ImageAll,
-            StorageService.All
-        };
+        return new List<FilePickerFileType> { StorageService.ImageAll, StorageService.All };
     }
 
     private static List<FilePickerFileType> GetSaveFileTypes()
     {
-        return new List<FilePickerFileType>
-        {
-            StorageService.ImageSvg,
-            StorageService.All
-        };
+        return new List<FilePickerFileType> { StorageService.ImageSvg, StorageService.All };
     }
-    
+
+    private async Task Trace()
+    {
+        if (_traceResult is not null)
+        {
+            await _traceResult.Trace(_options);
+        }
+    }
+
+    private void Redraw()
+    {
+        if (_traceResult is not null)
+        {
+            _traceResult.FillColor = _options.FillColor;
+        }
+    }
+
+    public async Task Load(Stream stream, string fileName)
+    {
+        var source = await TraceResultViewModel.OpenStream(stream);
+        var traceResult = new TraceResultViewModel(source, fileName);
+        await traceResult.Trace(_options);
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            try
+            {
+                var sourceImage = new SourceImageViewModel(source);
+   
+                TraceResult?.Dispose();
+                TraceResult = null;
+                TraceResult = traceResult;
+
+                SourceImage?.Dispose();
+                SourceImage = null;
+                SourceImage = sourceImage;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }, DispatcherPriority.Normal);
+    }
+
     [RelayCommand]
     private async Task Open()
     {
@@ -76,9 +99,7 @@ public partial class MainWindowViewModel
 
         var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "Open image",
-            FileTypeFilter = GetOpenFileTypes(),
-            AllowMultiple = false
+            Title = "Open image", FileTypeFilter = GetOpenFileTypes(), AllowMultiple = false
         });
 
         var file = result.FirstOrDefault();
@@ -88,7 +109,7 @@ public partial class MainWindowViewModel
             try
             {
                 await using var stream = await file.OpenReadAsync();
-                await OpenStream(stream, file.Name);
+                await Load(stream, file.Name);
             }
             catch (Exception ex)
             {
@@ -101,6 +122,11 @@ public partial class MainWindowViewModel
     [RelayCommand]
     private async Task Save()
     {
+        if (_traceResult is null)
+        {
+            return;
+        }
+
         var storageProvider = StorageService.GetStorageProvider();
         if (storageProvider is null)
         {
@@ -111,7 +137,7 @@ public partial class MainWindowViewModel
         {
             Title = "Save drawing",
             FileTypeChoices = GetSaveFileTypes(),
-            SuggestedFileName = Path.GetFileNameWithoutExtension(_fileName),
+            SuggestedFileName = Path.GetFileNameWithoutExtension(_traceResult.FileName),
             DefaultExtension = "svg",
             ShowOverwritePrompt = true
         });
@@ -121,7 +147,7 @@ public partial class MainWindowViewModel
             try
             {
                 await using var stream = await file.OpenWriteAsync();
-                await SaveStream(stream);
+                await _traceResult.SaveStream(stream);
             }
             catch (Exception ex)
             {
@@ -129,86 +155,5 @@ public partial class MainWindowViewModel
                 Console.WriteLine(ex.StackTrace);
             }
         }
-    }
-
-    public async Task SaveStream(Stream stream)
-    {
-        if (_paths is not null)
-        {
-            await SvgWriter.Save(Width, Height, _paths, stream, _options.FillColor);
-        }
-    }
-
-    public async Task OpenStream(Stream stream, string filename)
-    {
-        await Decode(stream);
-
-        await Trace();
-
-        FileName = filename;
-    }
-
-    private async Task Decode(Stream stream)
-    {
-        _source?.Dispose();
-        _source = await SixLabors.ImageSharp.Image.LoadAsync<Rgba32>(stream);
-    }
-
-    private async Task Trace()
-    {
-        if (_source is null)
-        {
-            return;
-        }
-
-        var param = new PotraceParam()
-        {
-            TurdSize = _options.TurdSize,
-            TurnPolicy = _options.TurnPolicy,
-            AlphaMax = _options.AlphaMax,
-            OptiCurve = _options.OptiCurve,
-            OptTolerance = _options.OptTolerance,
-            QuantizeUnit = _options.QuantizeUnit
-        };
-
-        static bool DefaultFilter(Rgba32 c) => c.R < 128;
-        var filter = DefaultFilter;
-
-        try
-        {
-            var compiledFilter = await Compile(_options.Filter);
-            filter = compiledFilter;
-        }
-        catch
-        {
-            Console.WriteLine("Failed to compile user filter.");
-        }
-
-        var paths = PotraceAvalonia.Trace(param, _source, filter).ToList();
-
-        Width = _source.Width;
-        Height = _source.Height;
-        Paths = paths;
-    }
-
-    private async Task<Func<Rgba32, bool>> Compile(string filter)
-    {
-#if USE_DYNAMIC_LINQ
-        return await Task.Run(() =>
-        {
-            var code = $"c => {filter}";
-            Expression<Func<Rgba32, bool>> e = DynamicExpressionParser.ParseLambda<Rgba32, bool>(
-                new ParsingConfig(),
-                true,
-                code);
-            var compiledFilter = e.Compile();
-            return compiledFilter;
-        });
-#else
-        var code = $"c => {filter}";
-        var options = ScriptOptions.Default.WithReferences(typeof(Rgba32).Assembly);
-        var compiledFilter = await CSharpScript.EvaluateAsync<Func<Rgba32, bool>>(code, options);
-        return compiledFilter;
-#endif
     }
 }
