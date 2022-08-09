@@ -67,16 +67,16 @@ public partial class MainWindowViewModel
         var traceResult = new TraceResultViewModel(source, fileName);
         await traceResult.Trace(_options);
 
-        TraceResult?.Dispose();
-        TraceResult = null;
-        TraceResult = traceResult;
-        
         Dispatcher.UIThread.Post(() =>
         {
             try
             {
                 var sourceImage = new SourceImageViewModel(source);
    
+                TraceResult?.Dispose();
+                TraceResult = null;
+                TraceResult = traceResult;
+
                 SourceImage?.Dispose();
                 SourceImage = null;
                 SourceImage = sourceImage;
