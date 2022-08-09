@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using TraceGui.Services;
 
 namespace TraceGui.ViewModels;
 
@@ -14,10 +16,11 @@ public partial class MainWindowViewModel
 {
     [ObservableProperty] private OptionsViewModel _options;
     [ObservableProperty] private TraceResultViewModel? _traceResult;
+    [ObservableProperty] private SourceImageViewModel? _sourceImage;
 
     public MainWindowViewModel()
     {
-        _options = new OptionsViewModel(Trace);
+        _options = new OptionsViewModel(Trace, Redraw);
 
         Task.Run(async () =>
         {
@@ -50,6 +53,14 @@ public partial class MainWindowViewModel
         }
     }
 
+    private void Redraw()
+    {
+        if (_traceResult is not null)
+        {
+            _traceResult.FillColor = _options.FillColor;
+        }
+    }
+
     public async Task Load(Stream stream, string fileName)
     {
         var source = await TraceResultViewModel.OpenStream(stream);
@@ -59,6 +70,22 @@ public partial class MainWindowViewModel
         TraceResult?.Dispose();
         TraceResult = null;
         TraceResult = traceResult;
+        
+        Dispatcher.UIThread.Post(() =>
+        {
+            try
+            {
+                var sourceImage = new SourceImageViewModel(source);
+   
+                SourceImage?.Dispose();
+                SourceImage = null;
+                SourceImage = sourceImage;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }, DispatcherPriority.Normal);
     }
 
     [RelayCommand]
@@ -120,7 +147,7 @@ public partial class MainWindowViewModel
             try
             {
                 await using var stream = await file.OpenWriteAsync();
-                await _traceResult.SaveStream(stream, _options);
+                await _traceResult.SaveStream(stream);
             }
             catch (Exception ex)
             {

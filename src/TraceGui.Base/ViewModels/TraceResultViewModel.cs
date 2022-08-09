@@ -23,9 +23,9 @@ public partial class TraceResultViewModel : IDisposable
 {
     private readonly SixLabors.ImageSharp.Image<Rgba32>? _source;
     [ObservableProperty] private string? _fileName;
-    [ObservableProperty] private IEnumerable<PathGeometry>? _paths;
     [ObservableProperty] private int _width;
     [ObservableProperty] private int _height;
+    [ObservableProperty] private IEnumerable<PathGeometry>? _paths;
     [ObservableProperty] private string _fillColor = "#000000";
 
     public TraceResultViewModel()
@@ -35,14 +35,16 @@ public partial class TraceResultViewModel : IDisposable
     public TraceResultViewModel(SixLabors.ImageSharp.Image<Rgba32> source, string fileName)
     {
         _source = source;
+        _width = _source.Width;
+        _height = _source.Height;
         _fileName = fileName;
     }
 
-    public async Task SaveStream(Stream stream, OptionsViewModel options)
+    public async Task SaveStream(Stream stream)
     {
         if (_paths is not null)
         {
-            await SvgWriter.Save(Width, Height, _paths, stream, options.FillColor);
+            await SvgWriter.Save(Width, Height, _paths, stream, _fillColor);
         }
     }
 
@@ -83,8 +85,6 @@ public partial class TraceResultViewModel : IDisposable
 
         var paths = PotraceAvalonia.Trace(param, _source, filter).ToList();
 
-        Width = _source.Width;
-        Height = _source.Height;
         Paths = paths;
         FillColor = _fillColor;
     }
