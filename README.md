@@ -90,32 +90,6 @@ dotnet build ./src/TraceGui/TraceGui.csproj -c Release
 dotnet run --project ./src/TraceGui/TraceGui.csproj -c Release
 ```
 
-### Publish
-
-#### Windows
-
-```bash
-dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r win7-x64 -o TraceGui-win7-x64
-```
-
-#### Debian
-
-```bash
-dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r debian.8-x64 -o TraceGui-debian.8-x64
-```
-
-#### Ubuntu
-
-```bash
-dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r ubuntu.14.04-x64 -o TraceGui-ubuntu.14.04-x64
-```
-
-#### macOS
-
-```bash
-dotnet publish ./src/TraceGui/TraceGui.csproj -c Release -f net5.0 -r osx.10.12-x64 -o TraceGui-osx.10.12-x64
-```
-
 # Licensing
 
 Trace is licensed under the [GPL-3.0 License](LICENSE).
