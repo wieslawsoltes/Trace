@@ -14,7 +14,7 @@ public partial class MainWindowViewModel
 {
     [ObservableProperty] private OptionsViewModel _options;
     [ObservableProperty] private TraceResultViewModel? _traceResult;
-    
+
     public MainWindowViewModel()
     {
         _options = new OptionsViewModel(Trace);
@@ -34,20 +34,12 @@ public partial class MainWindowViewModel
 
     private List<FilePickerFileType> GetOpenFileTypes()
     {
-        return new List<FilePickerFileType>
-        {
-            StorageService.ImageAll,
-            StorageService.All
-        };
+        return new List<FilePickerFileType> { StorageService.ImageAll, StorageService.All };
     }
 
     private static List<FilePickerFileType> GetSaveFileTypes()
     {
-        return new List<FilePickerFileType>
-        {
-            StorageService.ImageSvg,
-            StorageService.All
-        };
+        return new List<FilePickerFileType> { StorageService.ImageSvg, StorageService.All };
     }
 
     private async Task Trace()
@@ -80,9 +72,7 @@ public partial class MainWindowViewModel
 
         var result = await storageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Title = "Open image",
-            FileTypeFilter = GetOpenFileTypes(),
-            AllowMultiple = false
+            Title = "Open image", FileTypeFilter = GetOpenFileTypes(), AllowMultiple = false
         });
 
         var file = result.FirstOrDefault();
