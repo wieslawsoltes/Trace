@@ -8,5 +8,8 @@
   </Application.DataTemplates>
   <Application.Styles>
     <FluentTheme Mode="Dark" />
+    <Style Selector="TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
+    </Style>
   </Application.Styles>
 </Application>
