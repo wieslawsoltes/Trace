@@ -18,8 +18,7 @@ using Microsoft.CodeAnalysis.Scripting;
 
 namespace TraceGui.ViewModels;
 
-[ObservableObject]
-public partial class TraceResultViewModel : IDisposable
+public partial class TraceResultViewModel : ViewModelBase, IDisposable
 {
     private readonly SixLabors.ImageSharp.Image<Rgba32>? _source;
     [ObservableProperty] private string? _fileName;

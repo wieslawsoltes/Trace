@@ -11,8 +11,7 @@ using TraceGui.Services;
 
 namespace TraceGui.ViewModels;
 
-[ObservableObject]
-public partial class MainWindowViewModel
+public partial class MainWindowViewModel : ViewModelBase
 {
     [ObservableProperty] private OptionsViewModel _options;
     [ObservableProperty] private TraceResultViewModel? _traceResult;

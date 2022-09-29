@@ -6,8 +6,7 @@ using ReactiveMarbles.PropertyChanged;
 
 namespace TraceGui.ViewModels;
 
-[ObservableObject]
-public partial class OptionsViewModel
+public partial class OptionsViewModel : ViewModelBase
 {
     [ObservableProperty] private int _turdSize = 2;
     [ObservableProperty] private int _turnPolicy = 4;

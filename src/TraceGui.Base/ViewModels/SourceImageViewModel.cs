@@ -5,8 +5,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace TraceGui.ViewModels;
 
-[ObservableObject]
-public partial class SourceImageViewModel : IDisposable
+public partial class SourceImageViewModel : ViewModelBase, IDisposable
 {
     [ObservableProperty] private Avalonia.Media.Imaging.Bitmap? _bitmap;
 
