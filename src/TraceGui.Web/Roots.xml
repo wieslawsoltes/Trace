@@ -4,6 +4,8 @@
 
   <assembly fullname="TraceGui.Base" preserve="All" />
   <assembly fullname="TraceGui.Web" preserve="All" />
+  <assembly fullname="SixLabors.ImageSharp" preserve="All" />
+  <assembly fullname="System.Linq.Dynamic.Core" preserve="All" />
 
   <!-- Avalonia Themes -->
 
