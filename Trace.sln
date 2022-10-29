@@ -15,6 +15,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{AF45BF73
 		Directory.Build.props = Directory.Build.props
 		global.json = global.json
 		NuGet.Config = NuGet.Config
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "github", "github", "{35942C57-3678-4334-BB46-132D7D6A48F4}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\pages.yml = .github\workflows\pages.yml
 	EndProjectSection
 EndProject
 Global
@@ -45,5 +54,6 @@ Global
 		{DFDD66F1-AC6E-4663-826B-79CD77A8F0F7} = {F5C0FFC6-7E43-44BE-9E6E-DCD863A94567}
 		{8D8D05E3-AD27-4294-9669-5E50C5D499C1} = {F5C0FFC6-7E43-44BE-9E6E-DCD863A94567}
 		{4DD734AD-8898-41C7-A279-67C98AF2F386} = {F5C0FFC6-7E43-44BE-9E6E-DCD863A94567}
+		{35942C57-3678-4334-BB46-132D7D6A48F4} = {AF45BF73-3CF1-4802-B967-767EA3220255}
 	EndGlobalSection
 EndGlobal
