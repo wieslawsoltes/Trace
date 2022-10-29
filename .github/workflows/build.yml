@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1s
+      uses: actions/setup-dotnet@v1
     - name: Install wasm-tools
       run: dotnet workload install wasm-tools wasm-experimental
     - name: Build Release
