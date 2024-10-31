@@ -7,7 +7,7 @@ using TraceGui.ViewModels;
 
 namespace TraceGui.Views;
 
-public class MainView : UserControl
+public partial class MainView : UserControl
 {
     public MainView()
     {

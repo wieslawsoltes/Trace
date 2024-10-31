@@ -2,12 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:TraceGui"
              Name="Trace"
+             RequestedThemeVariant="Dark"
              x:Class="TraceGui.App">
   <Application.DataTemplates>
     <local:ViewLocator />
   </Application.DataTemplates>
   <Application.Styles>
-    <FluentTheme Mode="Dark" />
+    <FluentTheme />
     <Style Selector="TextBlock">
       <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}" />
     </Style>

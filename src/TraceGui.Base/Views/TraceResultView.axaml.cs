@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace TraceGui.Views;
 
-public class TraceResultView : UserControl
+public partial class TraceResultView : UserControl
 {
     public TraceResultView()
     {

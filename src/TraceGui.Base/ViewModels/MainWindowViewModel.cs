@@ -103,7 +103,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var file = result.FirstOrDefault();
 
-        if (file is not null && file.CanOpenRead)
+        if (file is not null)
         {
             try
             {
@@ -141,7 +141,7 @@ public partial class MainWindowViewModel : ViewModelBase
             ShowOverwritePrompt = true
         });
 
-        if (file is not null && file.CanOpenWrite)
+        if (file is not null)
         {
             try
             {
