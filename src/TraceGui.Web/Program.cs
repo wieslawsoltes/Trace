@@ -1,6 +1,6 @@
 using System.Runtime.Versioning;
 using Avalonia;
-using Avalonia.Web;
+using Avalonia.Browser;
 using TraceGui;
 
 [assembly:SupportedOSPlatform("browser")]
@@ -8,7 +8,7 @@ using TraceGui;
 internal class Program
 {
     private static void Main(string[] args) 
-        => BuildAvaloniaApp().SetupBrowserApp("out");
+        => BuildAvaloniaApp().StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();
